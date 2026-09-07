@@ -4,7 +4,8 @@
  * Three captures of the real application, alternating left and right so the
  * eye walks down instead of scanning a grid. No card chrome: the only surface
  * is the pane bezel around each screenshot, and the space between rows is what
- * separates them.
+ * separates them. Each one opens full size on a click -- the captures are
+ * 3200 px wide and the row shows them at a third of that.
  *
  * First of the four sections below the mesh, and so the tightest outer margin
  * of the four: the page's vertical air grows as the argument deepens, and this
@@ -12,6 +13,7 @@
  */
 import { motion } from 'motion/react'
 import type { Variants } from 'motion/react'
+import { Shot } from '../components/Shot'
 import { useCopy } from '../lib/i18n'
 import { RISE_PX, enterSlow, inView, inViewEarly, line, prefersReducedMotion, rise, stagger } from '../lib/motion'
 
@@ -78,17 +80,7 @@ export function Scenes() {
                   variants={shot}
                   className={flipped ? 'lg:col-span-7 lg:col-start-6' : 'lg:col-span-7 lg:col-start-1'}
                 >
-                  <div className="pane rounded-2xl p-1.5 shadow-2xl shadow-abyss/70 sm:p-2">
-                    <img
-                      src={`${import.meta.env.BASE_URL}shots/${item.shot}`}
-                      alt={item.alt}
-                      width={1680}
-                      height={940}
-                      loading="lazy"
-                      decoding="async"
-                      className="block h-auto w-full rounded-xl"
-                    />
-                  </div>
+                  <Shot src={item.shot} alt={item.alt} caption={item.title} />
                 </motion.figure>
 
                 <div
