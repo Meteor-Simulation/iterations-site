@@ -1,0 +1,103 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Iterations — one palette, read as a descent.
+   The page starts at the surface of the sea and ends in the deep, so the
+   tokens are named for depth rather than for a role: each section picks the
+   band it sits in, and the move between bands is the story.
+   --------------------------------------------------------------------------- */
+@theme {
+  --color-abyss: #03060a;
+  --color-deep: #06101a;
+  --color-sea: #0a1f2e;
+  --color-shelf: #10394a;
+  --color-tide: #1c6b7c;
+  --color-glow: #4fd1c5;
+  --color-foam: #e9f5f3;
+  --color-mist: #9fb6bd;
+
+  --font-display: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Three display steps, and the page ranks itself with them: the hero, the
+     two pivots (the turn of the argument and its close), and everything that
+     supports them. Nothing between the steps — if a heading is not one of the
+     three it is not a heading. */
+  --text-hero: clamp(2.75rem, 8.5vw, 8.5rem);
+  --text-major: clamp(2.3rem, 5.8vw, 5.5rem);
+  --text-section: clamp(2rem, 4.6vw, 4.25rem);
+  --text-lead: clamp(1.05rem, 1.55vw, 1.5rem);
+
+  --ease-out-deep: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-abyss);
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-abyss);
+    color: var(--color-foam);
+    font-family: var(--font-display);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    /* Korean must never break mid-word. */
+    word-break: keep-all;
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.035em;
+    line-height: 1.03;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  p {
+    text-wrap: pretty;
+    margin: 0;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-glow) 35%, transparent);
+    color: var(--color-foam);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer utilities {
+  /* Three depths, and nothing else. Every section picks one. */
+  .band-surface {
+    background: linear-gradient(180deg, var(--color-abyss) 0%, var(--color-deep) 55%, var(--color-sea) 100%);
+  }
+  .band-mid {
+    background: linear-gradient(180deg, var(--color-sea) 0%, var(--color-deep) 100%);
+  }
+  .band-deep {
+    background: linear-gradient(180deg, var(--color-deep) 0%, var(--color-abyss) 100%);
+  }
+
+  .rule-glow {
+    background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--color-glow) 45%, transparent), transparent);
+  }
+
+  /* The one surface treatment the page reuses instead of bordered boxes. */
+  .pane {
+    background: color-mix(in oklab, var(--color-sea) 55%, transparent);
+    border: 1px solid color-mix(in oklab, var(--color-glow) 12%, transparent);
+    backdrop-filter: blur(14px);
+  }
+}
