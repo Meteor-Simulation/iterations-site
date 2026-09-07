@@ -22,6 +22,7 @@ import {
   WebGPURenderer,
 } from 'three/webgpu'
 import { CLEAR_COLOR, STILL_TIME, createOceanNodes } from './oceanNodes'
+import { createWordmark } from './wordmark'
 
 export interface OceanOptions {
   /** One still frame and no loop. The caller decides; this file only obeys. */
@@ -89,7 +90,10 @@ function buildWaterGeometry(): BufferGeometry {
 }
 
 /** Camera height in metres. Low enough that a big crest passes near eye level. */
-const EYE = 7
+/* Low and wide, the way the reference photographs are framed: the closer the
+   eye is to the water the more of the surface is seen at a grazing angle, and
+   grazing angles are where Fresnel and the glitter path do their work. */
+const EYE = 3.4
 
 export async function createOcean(host: HTMLElement, options: OceanOptions): Promise<OceanHandle> {
   // A WebGL2 fallback is wired in by the renderer itself, but asking for it up
@@ -131,7 +135,10 @@ export async function createOcean(host: HTMLElement, options: OceanOptions): Pro
   water.frustumCulled = false // displacement pushes the surface past its bounds
   scene.add(water)
 
-  const camera = new PerspectiveCamera(40, 1, 0.5, 24000)
+  const wordmark = createWordmark()
+  scene.add(wordmark.mesh)
+
+  const camera = new PerspectiveCamera(56, 1, 0.35, 24000)
   camera.position.set(0, EYE, 0)
 
   /** Slow enough to be felt rather than seen; the headline must stay still. */
@@ -163,6 +170,7 @@ export async function createOcean(host: HTMLElement, options: OceanOptions): Pro
 
   function draw(seconds: number) {
     nodes.time.value = seconds
+    wordmark.update(seconds)
     aimCamera(seconds)
     renderer.render(scene, camera)
   }
@@ -242,6 +250,7 @@ export async function createOcean(host: HTMLElement, options: OceanOptions): Pro
       document.removeEventListener('visibilitychange', onVisibility)
       scene.clear()
       waterGeometry.dispose()
+      wordmark.dispose()
       skyGeometry.dispose()
       nodes.water.dispose()
       nodes.sky.dispose()

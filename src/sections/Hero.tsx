@@ -33,8 +33,12 @@ const SCRIM =
   ' color-mix(in oklab, var(--color-abyss) 72%, transparent) 0%,' +
   ' color-mix(in oklab, var(--color-abyss) 22%, transparent) 16%,' +
   ' transparent 36%,' +
-  ' color-mix(in oklab, var(--color-deep) 40%, transparent) 64%,' +
-  ' color-mix(in oklab, var(--color-abyss) 86%, transparent) 90%,' +
+  // The fall to abyss starts as late as the seam allows. It used to begin at
+  // 64% and take the near water - the most detailed part of the surface, and
+  // the part the camera is closest to - down with it.
+  ' transparent 74%,' +
+  ' color-mix(in oklab, var(--color-abyss) 34%, transparent) 88%,' +
+  ' color-mix(in oklab, var(--color-abyss) 88%, transparent) 97%,' +
   ' var(--color-abyss) 100%)'
 
 export function Hero() {

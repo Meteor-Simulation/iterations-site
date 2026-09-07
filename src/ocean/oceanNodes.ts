@@ -36,7 +36,7 @@ import {
   vec3,
   vec4,
 } from 'three/tsl'
-import { CASCADES, CREST_HEIGHT } from './waves'
+import { CASCADES, CREST_HEIGHT, DETAIL_WAVES } from './waves'
 
 type F = Node<'float'>
 type V3 = Node<'vec3'>
@@ -121,6 +121,17 @@ function waveField(px: F, pz: F, time: F): WaveField {
     }
   }
 
+  // Slope-only detail, added after the displacement. The grid cannot carry a
+  // one-metre wave at two kilometres, but the normal can, and the normal is
+  // what the specular term reads - so the sea keeps glittering all the way out
+  // instead of going glassy at the radius where the last band faded.
+  for (const d of DETAIL_WAVES) {
+    const amp = float(d.slope).mul(float(1).sub(smoothstep(d.near, d.far, dist)))
+    const c = cos(px.mul(d.dx * d.k).add(pz.mul(d.dz * d.k)).sub(time.mul(d.omega)).add(d.phase))
+    slopeX = slopeX.add(c.mul(amp).mul(d.dx))
+    slopeZ = slopeZ.add(c.mul(amp).mul(d.dz))
+  }
+
   const tangentX = vec3(jxx.add(1), slopeX, jxz)
   const tangentZ = vec3(jxz, slopeZ, jzz.add(1))
 
@@ -128,13 +139,13 @@ function waveField(px: F, pz: F, time: F): WaveField {
   // overturning, and that is exactly where a real sea breaks. Gated by crest
   // height so the foam sits on top of waves rather than in the troughs.
   const jacobian = jxx.add(1).mul(jzz.add(1)).sub(jxz.mul(jxz))
-  const fold = float(1).sub(smoothstep(0.22, 0.75, jacobian))
-  const crest = smoothstep(0.28, 0.78, dispY.div(CREST_HEIGHT))
+  const fold = float(1).sub(smoothstep(0.3, 0.86, jacobian))
+  const crest = smoothstep(0.2, 0.72, dispY.div(CREST_HEIGHT))
 
   return {
     disp: vec3(dispX, dispY, dispZ),
     normal: normalize(cross(tangentZ, tangentX)),
-    foam: saturate(fold.mul(crest).mul(1.35)),
+    foam: saturate(fold.mul(crest).mul(1.7)),
   }
 }
 
@@ -145,13 +156,23 @@ function waveField(px: F, pz: F, time: F): WaveField {
  */
 function skyColor(dir: V3, sun: V3): V3 {
   const up = saturate(dir.y.mul(2.4))
-  const base = mix(mix(color(DEEP), color(SHELF), 0.5), color(ABYSS), pow(up, 0.6))
+  // Bright at the horizon, dark overhead: the band of haze just above the water
+  // is what gives a sea its depth, and it is the first thing missing when water
+  // is rendered against a flat sky.
+  // Overhead runs to DEEP, not to black. A bumpy foreground reflects mostly
+  // upward, so a sky that is black above the horizon leaves the near water with
+  // nothing to catch and it reads as a smooth sheet however bumpy it really is.
+  const base = mix(mix(color(SHELF), color(TIDE), 0.35), mix(color(DEEP), color(SEA), 0.45), pow(up, 0.8))
   // Below the horizon the dome must go to water colour, or a bright band shows
   // beyond the last ring of the mesh.
-  const below = mix(base, color(ABYSS), saturate(dir.y.mul(-7)))
+  // Below the horizon the dome runs to the deep water colour rather than to
+  // black, so the last ring of the mesh dissolves instead of ending.
+  const below = mix(base, color(DEEP), saturate(dir.y.mul(-7)))
 
   const toSun = saturate(dot(dir, sun))
-  const glint = pow(toSun, 300).mul(0.85).add(pow(toSun, 9).mul(0.1)).add(pow(toSun, 2).mul(0.03))
+  // Tight enough to read as a sun rather than a bloom: the wide term was making
+  // a soft blob on the horizon instead of a bright band with a path under it.
+  const glint = pow(toSun, 420).mul(1.15).add(pow(toSun, 40).mul(0.13)).add(pow(toSun, 6).mul(0.05)).add(pow(toSun, 1.5).mul(0.03))
   // The glow is killed below the horizon so the glitter path cannot leak under it.
   const above = saturate(dir.y.mul(9).add(0.1))
 
@@ -193,7 +214,11 @@ export function createOceanNodes(): OceanNodes {
 
   // Body colour: troughs sit in the abyss, crests lift toward sea green.
   const height = worldPos.y
-  const body = mix(color(ABYSS), color(SEA), saturate(height.mul(0.16).add(0.42)))
+  // Troughs are dark but never black: even a trough sees most of the sky dome,
+  // and a body colour that reaches true black is what makes the near water look
+  // like a hole rather than like water.
+  const body = mix(mix(color(ABYSS), color(DEEP), 0.55), mix(color(SEA), color(SHELF), 0.6), saturate(height.mul(0.19).add(0.46)))
+  const ambient = mix(color(DEEP), color(SEA), 0.5).mul(0.5)
 
   // Light that went through a thin crest and came back out. Only when the
   // camera is looking roughly down-sun, only near the top of a wave.
@@ -204,18 +229,27 @@ export function createOceanNodes(): OceanNodes {
 
   const half = normalize(view.add(sun))
   const nDotH = saturate(dot(normal, half))
-  const specular = mix(color(GLOW), color(FOAM), 0.55).mul(
-    pow(nDotH, 700).mul(2.2).add(pow(nDotH, 40).mul(0.08)),
-  )
+  // Three lobes, not one. The tight lobe is the individual glint off a single
+  // facet, the middle one is the glitter path those glints live in, and the
+  // broad one is the sheen that tells you the sky is bright over there. With
+  // one lobe the sun is a dot on flat water; with three it is a path.
+  const glitter = pow(nDotH, 900).mul(3.4).add(pow(nDotH, 110).mul(0.45)).add(pow(nDotH, 16).mul(0.09))
+  // Only where the sun is actually up-view, so the left of the frame - where
+  // the headline sits - stays dark.
+  const sunSide = saturate(dot(normalize(vec3(view.x.mul(-1), 0, view.z.mul(-1))), vec3(sun.x, 0, sun.z)).mul(0.85).add(0.35))
+  const specular = mix(color(GLOW), color(FOAM), 0.72).mul(glitter.mul(sunSide))
 
-  const lit = mix(body, sky, fresnel).add(subsurface).add(specular.mul(float(1).sub(foam)))
-  const surface = mix(lit, mix(color(TIDE), color(FOAM), 0.86), foam.mul(0.85))
+  const lit = mix(body, sky, fresnel).add(ambient).add(subsurface).add(specular.mul(float(1).sub(foam)))
+  const surface = mix(lit, mix(color(TIDE), color(FOAM), 0.88), foam.mul(0.92))
 
   // Aerial perspective. The far water dissolves into the sky along the view
   // azimuth, so the last ring of the grid is never a visible edge.
-  const horizon = skyColor(normalize(vec3(view.x.mul(-1), 0.02, view.z.mul(-1))), sun)
+  const horizon = skyColor(normalize(vec3(view.x.mul(-1), 0.012, view.z.mul(-1))), sun)
   const range = length(vec2(worldPos.x.sub(cameraPosition.x), worldPos.z.sub(cameraPosition.z)))
-  const faded = mix(surface, horizon, smoothstep(600, 4800, range).mul(0.93))
+  // Starts nearer and lands harder than before: the reference photographs all
+  // show the far water collapsing into a bright band well before the horizon,
+  // and that band is most of what reads as distance.
+  const faded = mix(surface, horizon, smoothstep(240, 3400, range).mul(0.95))
 
   water.colorNode = vec4(faded, 1)
 
