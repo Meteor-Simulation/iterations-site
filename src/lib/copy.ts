@@ -56,7 +56,7 @@ export interface Copy {
     signedInAs: string
     offlineNote: string
   }
-  footer: { owner: string; collaborator: string; collaboratorLabel: string; license: string; licenseNote: string; links: Array<{ label: string; href: string }>; contact: string }
+  footer: { owner: string; collaborator: string; collaboratorLabel: string; license: string; licenseNote: string; licenseResearch: string; licenseTitle: string; links: Array<{ label: string; href: string }>; contact: string }
   nav: { items: Array<{ id: string; label: string }>; language: string }
 }
 
@@ -167,7 +167,7 @@ const en: Copy = {
     emailPlaceholder: 'you@company.com',
     emailInvalid: 'That does not look like an email address.',
     consentMarketing: 'I agree that Iterations may use this address to send product news and updates. This is the only reason it is collected, and you can withdraw at any time by writing to the address below.',
-    consentLicence: 'I understand Iterations is licensed under the Prosperity Public License 3.0.0: free for personal, educational and public research use, and commercial use gets a thirty-day trial before it needs a licence.',
+    consentLicence: 'I understand the licence: free for personal, educational, government and charitable use, and for research whose purpose is public — but development aimed at a product or at technology transferred to industry, wherever it is done, gets a thirty-day trial and then needs a licence.',
     consentRequired: 'Both boxes have to be ticked to continue.',
     submit: 'Unlock the download',
     submitting: 'One moment…',
@@ -180,8 +180,10 @@ const en: Copy = {
     owner: 'Iterations Co., Ltd.',
     collaboratorLabel: 'In collaboration with',
     collaborator: 'Meteo Simulation Co., Ltd.',
-    license: 'Prosperity Public License 3.0.0',
-    licenseNote: 'Free for personal, educational and public research use. Commercial use gets a thirty-day trial, then needs a licence.',
+    licenseTitle: 'Licence',
+    license: 'Prosperity Public License 3.0.0, with the licensor reading appended',
+    licenseNote: 'Free for personal study and hobby work, educational institutions, universities and their institutes, government institutions, public safety, health and environmental bodies, and charities. Any other commercial use gets a thirty-day trial — one per company, not per person — and then needs a licence.',
+    licenseResearch: 'Research is judged by its purpose, not by who owns the institute. Fire and rescue, medicine, public health, safety, disaster response and environmental work is free wherever it is done, a government-funded institute included. Development aimed at a particular product or at technology transferred to industry — electric vehicles, rail and propulsion, aircraft engines, anything carrying a technology fee — is commercial use whoever performs it.',
     links: [
       { label: 'Repository', href: REPO_URL },
       { label: 'Release', href: RELEASE_URL },
@@ -309,7 +311,7 @@ const ko: Copy = {
     emailPlaceholder: 'you@company.com',
     emailInvalid: '이메일 주소 형식이 아닙니다.',
     consentMarketing: '이 주소로 Iterations의 제품 소식과 홍보 메일을 받는 데 동의합니다. 수집 목적은 이것 하나이며, 아래 주소로 연락하시면 언제든 철회하실 수 있습니다.',
-    consentLicence: 'Iterations가 Prosperity Public License 3.0.0으로 배포된다는 점에 동의합니다 — 개인·교육·공공 연구 목적은 무료이고, 상업적 이용은 30일 평가 후 라이선스가 필요합니다.',
+    consentLicence: '라이선스를 이해했습니다 — 개인·교육·정부·자선 목적과 공공 목적 연구는 무료이지만, 특정 제품이나 산업 이전을 목적으로 하는 기술개발은 어디에서 수행하든 30일 시험 후 라이선스가 필요합니다.',
     consentRequired: '두 항목 모두 동의하셔야 진행됩니다.',
     submit: '다운로드 열기',
     submitting: '잠시만요…',
@@ -322,8 +324,10 @@ const ko: Copy = {
     owner: '주식회사 이터레이션즈',
     collaboratorLabel: '협력 및 기여',
     collaborator: '주식회사 메테오시뮬레이션',
-    license: 'Prosperity Public License 3.0.0',
-    licenseNote: '개인·교육·공공 연구는 무료. 상업적 사용은 30일 평가 후 라이선스가 필요합니다.',
+    licenseTitle: '라이선스',
+    license: 'Prosperity Public License 3.0.0 + 라이선서 해석 조항',
+    licenseNote: '개인 학습·취미, 교육기관, 대학과 그 소속 연구소, 정부기관, 공공 안전·보건·환경 단체, 자선단체는 무료입니다. 그 밖의 상업적 이용은 30일 시험 — 사람이 아니라 회사 단위 — 후 라이선스가 필요합니다.',
+    licenseResearch: '연구는 기관의 소유 주체가 아니라 목적으로 판단합니다. 소방·의료·보건·안전·재난·환경 보호를 목적으로 하는 연구는 정부출연연구기관에서 수행하더라도 무료입니다. 특정 제품이나 산업 이전을 목적으로 하는 기술개발 — 전기차, 철도·추진, 항공기 엔진 등 기술료 징수 대상 — 은 정출연이라도 상업적 이용입니다.',
     links: [
       { label: '저장소', href: REPO_URL },
       { label: '릴리스', href: RELEASE_URL },

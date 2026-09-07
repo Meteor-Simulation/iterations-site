@@ -32,8 +32,12 @@ export function Footer() {
               <span className="text-base font-semibold tracking-tight">Iterations</span>
               <span className="font-mono text-xs text-mist">{VERSION}</span>
             </div>
-            <p className="mt-6 text-sm text-mist">{footer.license}</p>
-            <p className="mt-2 text-sm leading-relaxed text-mist/70">{footer.licenseNote}</p>
+            <p className="mt-6 text-xs uppercase tracking-wide text-mist/60">{footer.licenseTitle}</p>
+            <p className="mt-2 text-sm text-mist">{footer.license}</p>
+            <p className="mt-3 text-sm leading-relaxed text-mist/70">{footer.licenseNote}</p>
+            {/* The rule people get wrong: an institute is not free or paid as an
+                institution — the purpose of the work decides. */}
+            <p className="mt-3 border-l border-glow/25 pl-4 text-sm leading-relaxed text-mist/70">{footer.licenseResearch}</p>
           </div>
 
           <div className="flex flex-col gap-8 md:items-end">
