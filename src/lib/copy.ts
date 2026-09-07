@@ -95,9 +95,9 @@ const en: Copy = {
       {
         n: '02',
         title: 'You watch it run',
-        body: 'Residuals are drawn from the moment the solver takes the GPU. If it diverges it stops at the iteration where it diverged, and points at the line in the log that says why.',
+        body: 'An open-wheel car, 2.1 million cut cells, k-omega on an RTX 5070 Ti: 2,500 iterations in 40.7 seconds — 129 million cell-iterations a second. Residuals are drawn from the moment the solver takes the GPU, and if it diverges it stops at the iteration where it diverged and points at the line in the log that says why.',
         shot: 'run.png',
-        alt: 'A solver running — log stream and residual chart',
+        alt: 'The race-car case running — streaming solver log and live residual chart, GPU at 3.4 of 15.9 GB',
       },
       {
         n: '03',
@@ -239,9 +239,9 @@ const ko: Copy = {
       {
         n: '02',
         title: '돌아가는 걸 지켜봅니다',
-        body: '솔버가 GPU를 잡는 순간부터 잔차가 실시간으로 그려집니다. 발산하면 발산한 반복에서 멈추고, 왜 멈췄는지 로그의 그 줄을 가리킵니다.',
+        body: '오픈휠 차량, 컷셀 210만 개, k-omega, RTX 5070 Ti에서 2,500회 반복 40.7초 — 초당 1억 2,900만 셀-반복. 솔버가 GPU를 잡는 순간부터 잔차가 실시간으로 그려지고, 발산하면 발산한 반복에서 멈추고 왜 멈췄는지 로그의 그 줄을 가리킵니다.',
         shot: 'run.png',
-        alt: '솔버 실행 중 — 로그 스트림과 잔차 차트',
+        alt: '레이스카 케이스 실행 중 — 솔버 로그 스트림과 실시간 잔차 차트, GPU 15.9 GB 중 3.4 GB 사용',
       },
       {
         n: '03',
