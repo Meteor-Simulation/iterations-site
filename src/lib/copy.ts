@@ -108,7 +108,7 @@ const en: Copy = {
       {
         n: '02',
         title: 'You watch it run',
-        body: 'An open-wheel car, 2.1 million cut cells, k-omega on an RTX 5070 Ti: 2,500 iterations in 40.7 seconds — 129 million cell-iterations a second. Residuals are drawn from the moment the solver takes the GPU, and if it diverges it stops at the iteration where it diverged and points at the line in the log that says why.',
+        body: 'An open-wheel car, 2.1 million cut cells, a low-Mach momentum solve with k-omega on an RTX 5070 Ti. Residuals are drawn from the moment the solver takes the GPU, and if it diverges it stops at the iteration where it diverged and points at the line in the log that says why.',
         shot: 'run.png',
         alt: 'The race-car case running — streaming solver log and live residual chart, GPU at 3.4 of 15.9 GB',
       },
@@ -124,25 +124,25 @@ const en: Copy = {
   cutaway: {
     kicker: 'Cut open',
     title: 'The same run,\ncut four ways.',
-    lead: 'A 2.1-million-cell cut-cell mesh is a box from the outside. So cut it open: the mesh wrapped on the body, the symmetry plane, the streamlines over it, and the vectors on a cross-section behind the front axle. Four captures, one solved case, nothing done to them that the viewer did not draw.',
+    lead: 'A 2.1-million-cell cut-cell mesh is a box from the outside. So cut it open: the mesh and the field on one transverse cut, the symmetry plane, the whole car in iso view under its streamlines, and the vectors on a cross-section behind the front axle. Four captures, one solved case, nothing done to them that the viewer did not draw.',
     items: [
       {
-        title: 'The cut-cell mesh on the body',
-        body: 'A 128-cube block with the car carved out of it: 2,095,989 cells, of which 2,731 are cut by the surface and 1,163 sites fall inside the body. The wireframe is the mesh the solver actually integrated, not a rendering of the STL.',
+        title: 'The mesh and the field, one cut',
+        body: 'A transverse cut through the middle of the car, with the cut-cell mesh and the velocity on the same screen. The block is 128 cubed and the body is carved out of it: 2,093,052 cells, 6,224 of them cut by the surface, 4,100 lattice sites left inside. The edges are the mesh the solver integrated, not a rendering of the STL.',
         shot: 'car-mesh.png',
-        alt: 'The cut-cell mesh around the car body, drawn as edges',
+        alt: 'A transverse cut through the car showing the cut-cell mesh and the velocity field together',
       },
       {
         title: 'Contour on the symmetry plane',
-        body: 'Velocity magnitude on the z-mid plane. The stagnation point on the nose, the acceleration over the airbox, and the low-momentum pocket the rear wing sits in are all one field, read straight off the cells.',
+        body: 'Velocity magnitude down the centreline of the car. The stagnation ahead of the nose, the acceleration over the body, and the slow pocket left behind it are one field, read straight off the cells.',
         shot: 'car-contour.png',
         alt: 'Velocity-magnitude contour on the car symmetry plane',
       },
       {
-        title: 'Streamlines around the body',
-        body: 'Seeded on a grid at the inlet and integrated forward through the cut cells. Where they wrap the wheels and roll up behind the rear tyres is where the drag is.',
+        title: 'The whole car, in iso view',
+        body: 'Streamlines seeded on a grid just ahead of the nose and integrated forward through the cut cells, over the entire body. Where they wrap the wheels and roll up behind them is where the drag is.',
         shot: 'car-streamlines.png',
-        alt: 'Streamlines wrapping the car body and rolling up behind the wheels',
+        alt: 'The whole car in isometric view with streamlines passing over it',
       },
       {
         title: 'Velocity vectors on a cross-section',
@@ -309,7 +309,7 @@ const ko: Copy = {
       {
         n: '02',
         title: '계산되는 과정을 봅니다',
-        body: '오픈휠 경주차, 컷셀 210만 개, k-omega 난류 모델. RTX 5070 Ti에서 2,500회 반복에 38.4초, 초당 1억 3,700만 셀-반복입니다. 솔버가 GPU를 잡는 순간부터 잔차 그래프가 실시간으로 그려지고, 해가 발산하면 그 반복에서 멈춘 뒤 원인이 되는 로그 줄을 짚어 줍니다.',
+        body: '오픈휠 경주차, 컷셀 210만 개, k-omega 난류 모델을 얹은 저마하 운동량 해석을 RTX 5070 Ti에서 돌립니다. 솔버가 GPU를 잡는 순간부터 잔차 그래프가 실시간으로 그려지고, 해가 발산하면 그 반복에서 멈춘 뒤 원인이 되는 로그 줄을 짚어 줍니다.',
         shot: 'run.png',
         alt: '경주차 케이스 계산 중 — 솔버 로그와 실시간 잔차 그래프, GPU 15.9 GB 중 3.4 GB 사용',
       },
@@ -325,25 +325,25 @@ const ko: Copy = {
   cutaway: {
     kicker: '잘라 보기',
     title: '같은 계산 결과를,\n네 가지로 잘랐습니다.',
-    lead: '210만 개짜리 컷셀 격자는 바깥에서 보면 상자 하나일 뿐입니다. 그래서 잘랐습니다. 차체를 감싼 격자, 대칭면의 속도 분포, 차체를 지나는 유선, 앞바퀴 뒤 단면의 속도 벡터 — 모두 같은 한 번의 계산에서 나온 화면이고, 뷰어가 그린 그대로입니다.',
+    lead: '210만 개짜리 컷셀 격자는 바깥에서 보면 상자 하나일 뿐입니다. 그래서 잘랐습니다. 횡단면에 격자와 유동을 함께 올린 화면, 대칭면의 속도 분포, iso 뷰로 본 차량 전체와 그 위의 유선, 앞바퀴 뒤 단면의 속도 벡터 — 모두 같은 한 번의 계산에서 나온 화면이고, 뷰어가 그린 그대로입니다.',
     items: [
       {
-        title: '차체를 감싼 컷셀 격자',
-        body: '한 변 128개짜리 정육면체 격자에서 차체를 파낸 것입니다. 셀 2,095,989개 가운데 2,731개가 차체 표면에 잘렸고, 1,163개 자리는 차체 안쪽이라 셀이 없습니다. 화면의 격자선은 솔버가 실제로 계산한 격자이며, STL 형상을 그린 것이 아닙니다.',
+        title: '격자와 유동을 한 화면에',
+        body: '차량을 가운데에서 횡으로 자르고, 컷셀 격자와 속도장을 같은 화면에 올렸습니다. 한 변 128개짜리 정육면체 격자에서 차체를 파낸 것으로, 셀 2,093,052개 가운데 6,224개가 차체 표면에 잘렸고 4,100개 자리는 차체 안쪽이라 셀이 없습니다. 화면의 격자선은 솔버가 실제로 계산한 격자이며, STL 형상을 그린 것이 아닙니다.',
         shot: 'car-mesh.png',
-        alt: '차체 둘레의 컷셀 격자를 선으로 그린 화면',
+        alt: '차량을 횡으로 자른 단면에 컷셀 격자와 속도장을 함께 그린 화면',
       },
       {
         title: '대칭면 속도 분포',
-        body: '차체 한가운데를 세로로 자른 면의 속도 크기입니다. 노즈 앞의 정체 영역, 차체 위를 지나며 빨라지는 흐름, 뒤쪽에 남는 느린 영역이 한 장에 함께 보입니다. 셀 값을 그대로 색으로 옮긴 것입니다.',
+        body: '차량 중심선을 따라 세로로 자른 면의 속도 크기입니다. 노즈 앞의 정체 영역, 차체 위를 지나며 빨라지는 흐름, 뒤쪽에 남는 느린 영역이 한 장에 함께 보입니다. 셀 값을 그대로 색으로 옮긴 것입니다.',
         shot: 'car-contour.png',
         alt: '경주차 대칭면의 속도 분포',
       },
       {
-        title: '차체를 지나는 유선',
-        body: '입구 면에 시작점을 격자로 배치하고 흐름을 따라 적분한 선입니다. 선이 바퀴를 감고 뒤쪽에서 말려 올라가는 자리가 곧 항력이 생기는 자리입니다.',
+        title: '차량 전체, iso 뷰',
+        body: '노즈 바로 앞에 시작점을 격자로 배치하고 흐름을 따라 적분한 선을 차체 전체에 걸쳐 그렸습니다. 선이 바퀴를 감고 그 뒤에서 말려 올라가는 자리가 곧 항력이 생기는 자리입니다.',
         shot: 'car-streamlines.png',
-        alt: '차체를 감고 바퀴 뒤에서 말려 올라가는 유선',
+        alt: '차량 전체를 iso 뷰로 보고 그 위를 지나는 유선',
       },
       {
         title: '단면 속도 벡터',
