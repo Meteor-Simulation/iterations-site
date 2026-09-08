@@ -58,7 +58,7 @@ export interface Copy {
     offlineNote: string
   }
   footer: { owner: string; collaborator: string; collaboratorLabel: string; license: string; licenseNote: string; licenseResearch: string; licenseTitle: string; links: Array<{ label: string; href: string }>; contact: string }
-  nav: { items: Array<{ id: string; label: string }>; language: string }
+  nav: { items: Array<{ id: string; label: string }>; language: string; guide: string }
   mcp: {
     kicker: string
     title: string
@@ -190,7 +190,7 @@ const en: Copy = {
       { v: '905', k: 'unit tests', d: 'across all targets, zero failures' },
       { v: '0', k: 'GPL sources consulted', d: 'declared in every file header, and enforced by a test rather than by prose' },
     ],
-    note: 'Validation uses manufactured solutions, analytic solutions and published benchmarks only. It is never compared against another CFD code — SPEC-LIT §10/§22.',
+    note: 'Verification uses manufactured solutions, analytic solutions and published benchmarks. The comparison is not yet sufficient, and help with it is very welcome — what has not been closed is named on every run of ofgpu-validate.',
   },
   finale: {
     kicker: 'Start here',
@@ -247,6 +247,7 @@ const en: Copy = {
       { id: 'mcp', label: 'MCP' },
     ],
     language: 'Language',
+    guide: 'Guidebook',
   },
   mcp: {
     kicker: 'MCP',
@@ -391,7 +392,7 @@ const ko: Copy = {
       { v: '905', k: '단위 시험', d: '전체 대상 합계, 실패 0건' },
       { v: '0', k: 'GPL 참조', d: '파일마다 헤더로 선언하고, 문장이 아니라 시험으로 강제합니다' },
     ],
-    note: '검증에는 인위해법(MMS), 해석해, 공개 벤치마크만 씁니다. 다른 CFD 코드와 결과를 맞춰 보지 않습니다 — SPEC-LIT §10, §22.',
+    note: '검증에는 인위해법(MMS), 해석해, 공개 벤치마크를 씁니다. 비교가 불충분합니다. 많은 도움 부탁드립니다 — 아직 닫히지 않은 것은 ofgpu-validate가 매 실행 이름으로 부릅니다.',
   },
   finale: {
     kicker: '먼저,',
@@ -448,6 +449,7 @@ const ko: Copy = {
       { id: 'mcp', label: 'MCP' },
     ],
     language: '언어',
+    guide: '가이드북',
   },
   mcp: {
     kicker: 'MCP',

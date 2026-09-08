@@ -92,6 +92,14 @@ export function Nav() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2 md:ml-0">
+          {/* A page, not a section: it leaves the scroll rather than moving
+              inside it, so it sits with the controls and not with the marks. */}
+          <a
+            href="./guide.html"
+            className="hidden rounded-full border border-tide/35 px-4 py-1.5 text-xs text-mist transition-colors duration-300 hover:border-glow/50 hover:text-foam sm:block"
+          >
+            {nav.guide}
+          </a>
           <LocaleToggle />
           <GatedDownload className="cursor-pointer rounded-full border border-glow/40 bg-glow/10 px-4 py-1.5 text-xs font-medium text-glow transition-colors duration-300 hover:bg-glow/20">
             {hero.cta}

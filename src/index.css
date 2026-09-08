@@ -79,6 +79,28 @@
 }
 
 @layer utilities {
+  /* Wide letter-spacing is a Latin device: the eye reads the extra air as
+     emphasis because the word shape survives it. Hangul syllable blocks have
+     no such shape to survive, so 0.3em reads as loose syllables rather than as
+     a label. The Korean page keeps the hierarchy and drops most of the air.
+     The lang attribute is set by LocaleProvider, so this follows the toggle. */
+  html:lang(ko) [class*="tracking-[0.2em]"],
+  html:lang(ko) [class*="tracking-[0.22em]"],
+  html:lang(ko) [class*="tracking-[0.28em]"],
+  html:lang(ko) [class*="tracking-[0.3em]"],
+  html:lang(ko) [class*="tracking-[0.32em]"],
+  html:lang(ko) [class*="tracking-[0.34em]"],
+  html:lang(ko) [class*="tracking-[0.35em]"],
+  html:lang(ko) [class*="tracking-[0.42em]"] {
+    letter-spacing: 0.07em;
+  }
+
+  /* Uppercase does nothing to Hangul but does apply to the Latin words mixed
+     into it, which then shout inside a Korean phrase. */
+  html:lang(ko) .uppercase:not(:lang(en)) {
+    text-transform: none;
+  }
+
   /* Three depths, and nothing else. Every section picks one. */
   .band-surface {
     background: linear-gradient(180deg, var(--color-abyss) 0%, var(--color-deep) 55%, var(--color-sea) 100%);
